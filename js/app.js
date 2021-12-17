@@ -32,14 +32,14 @@ function advance () {
     } else {
         // Once the words list is finished create the results
         console.debug("results", results)
-        var correct = "";
-        var missed = "";
+        var correct = [];
+        var missed = [];
 
         _.forEach(results, function(result, i) {
             if (result == 1) {
-                correct += words_ordered[i] + ", "
+                correct.push(words_ordered[i])
             } else {
-                missed += words_ordered[i] + ", "
+                missed.push(words_ordered[i])
             }
         });
 
@@ -48,8 +48,8 @@ function advance () {
         $(".progress-bar").attr('aria-valuenow', current_word);
         $(".progress-bar").width((((current_word + 1 ) / word_count) * 100) + '%');
 
-        $(".correct-words").html(removeLastCommaSpace(correct));
-        $(".missed-words").html(removeLastCommaSpace(missed));
+        $(".correct-words").html(correct.sort().join(', '));
+        $(".missed-words").html(missed.sort().join(', '));
 
         resultsModal.show();
     } 
