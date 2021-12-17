@@ -1,0 +1,21 @@
+.correct { 
+    border-top-left-radius: 75px;
+    border-bottom-left-radius: 75px;
+}
+.word {
+    font-size: 10rem;
+}
+.missed {
+    border-top-right-radius: 75px;
+    border-bottom-right-radius: 75px;
+}
+.fixed.one-third {
+    top: 33%;
+}
+.fixed.one-third.center {
+    transform: translate(-50%, -50%);
+}
+.fixed.two-third {
+    top: 66%;
+    transform: translateY(-50%);
+}
