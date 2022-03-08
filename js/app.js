@@ -6,10 +6,11 @@ var word_count = _.size(words)
 var words_ordered = _.shuffle(words)
 var current_word = 0;
 var results = [];
-var resultsModal = new bootstrap.Modal(document.getElementById('results'), {});
+var resultsModal = new bootstrap.Modal('#results', { backdrop: 'static', keyboard: false });
 
 $(".progress-bar").attr('aria-valuemax', word_count);
 $(".progress-bar").width((((current_word + 1 ) / word_count) * 100) + '%');
+$(".progress-fraction").html('1/' + word_count)
 
 console.debug(word_count, "words");
 console.debug("ordered", words_ordered);
@@ -28,7 +29,8 @@ function advance () {
         console.debug(current_word);
         $(".word").html(words_ordered[current_word]);
         $(".progress-bar").attr('aria-valuenow', current_word);
-        $(".progress-bar").width((((current_word + 1 ) / word_count) * 100) + '%');
+        $(".progress-bar").width((((current_word + 1) / word_count) * 100) + '%');
+        $(".progress-fraction").html((current_word + 1) + '/' + word_count)
     } else {
         // Once the words list is finished create the results
         console.debug("results", results)
@@ -52,6 +54,7 @@ function advance () {
         $(".missed-words").html(missed.sort().join(', '));
 
         resultsModal.show();
+        $(".progress-fraction").html('1/' + word_count)
     } 
 }
 
@@ -63,6 +66,7 @@ function back () {
         $(".word").html(words_ordered[current_word]);
         $(".progress-bar").attr('aria-valuenow', current_word);
         $(".progress-bar").width((((current_word + 1 ) / word_count) * 100) + '%');
+        $(".progress-fraction").html(current_word + '/' + word_count)
     }
 }
 
