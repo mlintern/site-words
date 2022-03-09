@@ -2,18 +2,11 @@
 document.getElementById("year").innerHTML = new Date().getFullYear();
 
 // Init Vars
-var word_count = _.size(words)
-var words_ordered = _.shuffle(words)
-var current_word = 0;
+var word_count, words_ordered, current_word;
 var results = [];
 var resultsModal = new bootstrap.Modal('#results', { backdrop: 'static', keyboard: false });
 
-$(".progress-bar").attr('aria-valuemax', word_count);
-$(".progress-bar").width((((current_word + 1 ) / word_count) * 100) + '%');
-$(".progress-fraction").html('1/' + word_count)
-
-console.debug(word_count, "words");
-console.debug("ordered", words_ordered);
+resetWords()
 
 // Trim Final Comma and Space from results
 function removeLastCommaSpace (strng) {        
@@ -45,17 +38,26 @@ function advance () {
             }
         });
 
-        current_word = 0;
-        $(".word").html(words_ordered[current_word]);
-        $(".progress-bar").attr('aria-valuenow', current_word);
-        $(".progress-bar").width((((current_word + 1 ) / word_count) * 100) + '%');
-
         $(".correct-words").html(correct.sort().join(', '));
         $(".missed-words").html(missed.sort().join(', '));
 
+        resetWords();
         resultsModal.show();
-        $(".progress-fraction").html('1/' + word_count)
     } 
+}
+
+function resetWords () {
+    word_count = _.size(words)
+    words_ordered = _.shuffle(words)
+
+    console.debug(word_count, "words");
+    console.debug("ordered", words_ordered);
+
+    current_word = 0;
+    $(".word").html(words_ordered[current_word]);
+    $(".progress-bar").attr('aria-valuenow', current_word);
+    $(".progress-bar").width((((current_word + 1 ) / word_count) * 100) + '%');
+    $(".progress-fraction").html('1/' + word_count)
 }
 
 // Go to previous word
@@ -66,21 +68,33 @@ function back () {
         $(".word").html(words_ordered[current_word]);
         $(".progress-bar").attr('aria-valuenow', current_word);
         $(".progress-bar").width((((current_word + 1 ) / word_count) * 100) + '%');
-        $(".progress-fraction").html(current_word + '/' + word_count)
+        $(".progress-fraction").html(current_word + '/' + word_count);
     }
+}
+
+function loadWords (version) {
+    $.getScript( 'js/words.' + version + '.js' ).done( function ( script, textStatus ) {
+        resetWords();
+    })
 }
 
 $(document).ready(function() {
     $(".word").html(words_ordered[current_word])
     $(".correct").click(function(){
         results[current_word] = 1;
-        advance()
+        advance();
     });
     $(".missed").click(function(){
         results[current_word] = 0;
-        advance()
+        advance();
     });
     $(".back").click(function(){
-        back()
+        back();
+    });
+    $(".version").click(function(){
+        var version = $(this).text();
+        console.log(version);
+        $('.current-version').text('v' + version);
+        loadWords(version);
     });
 });
