@@ -19,7 +19,6 @@ function removeLastCommaSpace (strng) {
 function advance () {
     if ((current_word += 1) < word_count) {
         // If not at the end of the list
-        console.debug(current_word);
         $(".word").html(words_ordered[current_word]);
         $(".progress-bar").attr('aria-valuenow', current_word);
         $(".progress-bar").width((((current_word + 1) / word_count) * 100) + '%');
@@ -64,7 +63,6 @@ function resetWords () {
 function back () {
     if (current_word > 0) {
         current_word -= 1;
-        console.debug(current_word);
         $(".word").html(words_ordered[current_word]);
         $(".progress-bar").attr('aria-valuenow', current_word);
         $(".progress-bar").width((((current_word + 1 ) / word_count) * 100) + '%');
